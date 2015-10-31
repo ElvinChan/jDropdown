@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+
+	<head lang="en">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+		<link href="./css/bootstrap.css" rel="stylesheet" />
+		<link href="./css/prettify.css" rel="stylesheet" />
+		<style type="text/css">
+			.btn-group > span {
+				border: solid 1px #cccccc;
+			}
+		</style>
+		<script src="./js/jquery-1.11.3.js"></script>
+		<script src="./js/bootstrap.js"></script>
+		<script src="./js/prettify.js"></script>
+		<script src="../src/jdropdown.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('#drop-ctrl').jDropdown('init', {
+					width: '200px'
+				});
+				var dataList = [{
+					key: '1',
+					value: 'January'
+				}, {
+					key: '2',
+					value: 'February'
+				}, {
+					key: '3',
+					value: 'March'
+				}, {
+					key: '4',
+					value: 'April'
+				}, {
+					key: '5',
+					value: 'May'
+				}, {
+					key: '6',
+					value: 'June'
+				}, {
+					key: '7',
+					value: 'July'
+				}, {
+					key: '8',
+					value: 'August'
+				}, {
+					key: '9',
+					value: 'September'
+				}, {
+					key: '10',
+					value: 'October'
+				}, {
+					key: '11',
+					value: 'November'
+				}, {
+					key: '12',
+					value: 'December'
+				}];
+				$('#drop-ctrl').jDropdown('loadData', dataList, {
+					key: 'key',
+					value: 'value',
+					defaultValue: 'Select',
+					func: function(msg) {
+						alert('You selected "' + msg + '"');
+					},
+					separator: [3, 6, 9]
+				});
+			});
+		</script>
+		<title>jDropdown</title>
+	</head>
+
+	<body onload="prettyPrint()">
+		<div class="container bs-docs-container">
+			<h2>jDropdown</h2>
+			<br />
+			<h5>A JQuery plugin for quickly create drop-down controls in bootstrap style</h5>
+			<h5>快速生成Bootstrap风格下拉框的JQuery插件</h5>
+			<br />
+
+			<h2 id="quick-start">
+            <a href="#quick-start" name="quick-start">Quick start</a>
+        </h2>
+			<p>include the files</p>
+			<pre class="prettyprint"><code class="lang-html">    &lt;script src=&quot;./js/jquery.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;./js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;./js/jdropdown.min.js&quot;&gt;&lt;/script&gt;</code></pre>
+			<p>call the the plugin on a element as your wish</p>
+			<pre class="prettyprint"><code class="lang-js">    $("#element").jDropdown(method, options);</code></pre>
+			<p>here 's an example for how to initizlize and load data for a drop-down control</p>
+
+			<pre class="prettyprint"><code class="lang-js">    $(document).ready(function () {
+        $('#drop-ctrl').jDropdown('init', {
+            width: '200px'
+        });
+        var dataList = [
+            { key: '1', value: 'January' },
+            { key: '2', value: 'February' },
+            { key: '3', value: 'March' },
+            { key: '4', value: 'April' },
+            { key: '5', value: 'May' },
+            { key: '6', value: 'June' },
+            { key: '7', value: 'July' },
+            { key: '8', value: 'August' },
+            { key: '9', value: 'September' },
+            { key: '10', value: 'October' },
+            { key: '11', value: 'November' },
+            { key: '12', value: 'December' }
+        ];
+        $('#drop-ctrl').jDropdown('loadData', dataList, {
+            key: 'key',
+            value: 'value',
+            defaultValue: 'Select',
+            func: function (msg) {
+                alert('You selected "' + msg + '"');
+            },
+            separator: [3, 6, 9]
+        });
+    });</code></pre>
+			<br />
+			<button type="button" id="drop-ctrl"></button>
+			<br />
+			<br />
+			<p>All done!</p>
+			<hr />
+
+			<h2 id="download">
+            <a href="#download" name="download" id="download">Download</a>
+        </h2>
+			<p>
+				<a href="https://codeload.github.com/ElvinChan/jDropdown/zip/master">download zip from GitHub</a>
+			</p>
+			<hr />
+
+			<h2 id="options">
+            <a href="#options" name="options">Options</a>
+        </h2>
+			<p>
+				you can custom the control by passing options as second parameter when calling method 'init', 'load', 'update' all available options are listed below.
+			</p>
+			<table class="table table-striped table-hover">
+				<thead>
+					<tr>
+						<th>Option</th>
+						<th>type</th>
+						<th>default</th>
+						<th>Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>isSplit</td>
+						<td>bool</td>
+						<td>true</td>
+						<td>Whether the title of drop-down display in a single element on the left of the drop-down button.</td>
+					</tr>
+					<tr>
+						<td>titleStyle</td>
+						<td>string</td>
+						<td>'span'</td>
+						<td>Witch will be use for title label, <code>span</code> or <code>button</code> </td>
+					</tr>
+					<tr>
+						<td>width</td>
+						<td>string</td>
+						<td>'100px'</td>
+						<td>The width of the title label. e.g. <code>200px</code> , <code>50%</code> </td>
+					</tr>
+					<tr>
+						<td>isUp</td>
+						<td>bool</td>
+						<td>false</td>
+						<td>Popup the menu by specify this attribute 'true'</td>
+					</tr>
+					<tr>
+						<td>defaultValue</td>
+						<td>string</td>
+						<td>null</td>
+						<td>Default key of drop-down menu, which will be displayed on the title label.</td>
+					</tr>
+					<tr>
+						<td>separator</td>
+						<td>array</td>
+						<td>undefined</td>
+						<td>Specify position of the separators by int array.</td>
+						</td>
+					</tr>
+
+					<tr>
+						<td>func</td>
+						<td>function</td>
+						<td>undefined</td>
+						<td>The function will be called when item of the drop-down menu is clicked, whose key will be passed to the function.</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<hr />
+
+			<h2 id="methods">
+            <a href="#methods" name="methods">Methods</a>
+        </h2>
+			<p>
+				Specify method name as first parameter when calling jDropdown on the controls.
+			</p>
+
+			<h4>init</h4>
+			<p>init drop-down control with settings</p>
+			<pre class="prettyprint"><code class="lang-js">    $('#drop-ctrl').jDropdown('init', {
+        isSplit: true
+    });</code></pre>
+			<hr />
+
+			<h4>load</h4>
+			<p>load drop-down control with data list and settings</p>
+			<pre class="prettyprint"><code class="lang-js">    var dataList = [
+        { key: '1', value: 'January' },
+        { key: '2', value: 'February' },
+        { key: '3', value: 'March' },
+        { key: '4', value: 'April' },
+        { key: '5', value: 'May' },
+        { key: '6', value: 'June' },
+        { key: '7', value: 'July' },
+        { key: '8', value: 'August' },
+        { key: '9', value: 'September' },
+        { key: '10', value: 'October' },
+        { key: '11', value: 'November' },
+        { key: '12', value: 'December' }
+    ];
+    $('#drop-ctrl').jDropdown('loadData', dataList, {
+        key: 'key',
+        value: 'value',
+        defaultValue: 'Select',
+        func: function (msg) {
+            alert('You selected "' + msg + '"');
+        },
+        separator: [3, 6, 9]
+    });</code></pre>
+			<hr />
+
+			<h4>update</h4>
+			<p>update settings for drop-down control</p>
+			<pre class="prettyprint"><code class="lang-js">    $('#drop-ctrl').jDropdown('update', {
+        width: '500px',
+        separator: [4, 8],
+        titleStyle: 'span'
+    });</code></pre>
+			<hr />
+
+			<h4>insertItem</h4>
+			<p>insert item to data list of drop-down control</p>
+			<pre class="prettyprint"><code class="lang-js">    $('#drop-ctrl').jDropdown('insertItem', [
+            { key: '13', value: 'January' },
+            { key: '14', value: 'February' }], {
+        isUp: true
+    });</code></pre>
+			<hr />
+
+			<h4>clickItem</h4>
+			<p>tigger click event of the specify item of drop-down control</p>
+			<pre class="prettyprint"><code class="lang-js">    $('#drop-ctrl').jDropdown('2');</code></pre>
+			<hr />
+
+			<h4>removeItem</h4>
+			<p>remove item from data list of drop-down control</p>
+			<pre class="prettyprint"><code class="lang-js">    $('#drop-ctrl').jDropdown('removeItem', [2, 5, 7], {
+        isUp: false
+    });</code></pre>
+			<hr />
+
+			<h2 id="compatibility">
+            <a href="#compatibility" name="compatibility">Compatibility
+            </a>
+        </h2>
+			<p>Requirs jQuery 1.7+ &amp; bootstrap 3.0.3+</p>
+			<p>Works well with all modern browsers and IE8+.</p>
+			<hr />
+
+			<h2 id="license">
+            <a href="#license" name="license">License
+            </a>
+        </h2>
+			<p>Licensed under the MIT License</p>
+			<hr />
+
+			<h2 id="misc">
+            <a href="#misc" name="misc">Misc
+            </a>
+        </h2>
+			<p>Visit my <a href="http://blog.quweimian.com/">blog</a> for more information.</p>
+		</div>
+	</body>
+
+</html>

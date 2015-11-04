@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 
 	<head lang="en">
@@ -130,7 +130,7 @@
             <a href="#download" name="download" id="download">Download</a>
         </h2>
 			<p>
-				<a href="https://codeload.github.com/ElvinChan/jDropdown/zip/master">download zip from GitHub</a>
+                <a href="https://github.com/ElvinChan/jDropdown/archive/master.zip">download zip from GitHub</a>
 			</p>
 			<hr />
 
@@ -165,7 +165,7 @@
 					<tr>
 						<td>width</td>
 						<td>string</td>
-						<td>'100px'</td>
+						<td>'auto'</td>
 						<td>The width of the title label. e.g. <code>200px</code> , <code>50%</code> </td>
 					</tr>
 					<tr>
@@ -185,9 +185,19 @@
 						<td>array</td>
 						<td>undefined</td>
 						<td>Specify position of the separators by int array.</td>
-						</td>
 					</tr>
-
+                    <tr>
+                        <td>menuAlign</td>
+                        <td>string</td>
+                        <td>'left'</td>
+                        <td>Specify alignment of drop-down menu 'left' or 'right', the attribute 'width' should be 'auto'.</td>
+                    </tr>
+                    <tr>
+                        <td>disabledKeys</td>
+                        <td>array</td>
+                        <td>undefined</td>
+                        <td>Specify disabled items of drop-down menu according to key</td>
+                    </tr>
 					<tr>
 						<td>func</td>
 						<td>function</td>

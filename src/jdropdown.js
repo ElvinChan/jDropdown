@@ -7,14 +7,25 @@
 ;
 (function ($, window, document, undefined) {
     // Create the defaults once
-    var pluginName = 'jDropdown';
+    var pluginName = 'jDropdown',
+        defaults = {
+            isSplit: true, // Whether the title of drop-down display in a single element on the left of the drop-down button
+            titleStyle: 'span', // Witch will be use for title label, span or button
+            width: 'auto', // The width of the title label. e.g. 200px, 50%
+            isUp: false, // Popup the menu by specify this attribute 'true'
+            defaultValue: null, // Default key of drop-down menu, which will be displayed on the title label
+            separator: undefined, // Specify position of the separators by int array
+            menuAlign: 'left', // Specify alignment of drop-down menu 'left' or 'right', the attribute 'width' should be 'auto'
+            disabledKeys: undefined, // Specify disabled items of drop-down menu according to key
+            func: undefined // The function will be called when item of the drop-down menu is clicked, whose key will be passed to the function
+        };
 
     // 1.Basic Method
     // 从控件获取设置项
-    var getSettings = function (obj) {
+    var getSettings = function (obj, isInit) {
         var settings = obj.data(pluginName);
-        if (typeof (settings) == 'undefined') {
-            methods.init.apply(this, arguments);
+        if (!isInit && typeof(settings) == 'undefined') {
+            window.console.error('Could not get data from drop-down control, please exec "init" method first');
         }
         return settings;
     }
@@ -27,6 +38,7 @@
             return Object.prototype.toString.call(value) === '[object Array]';
         }
     }
+
     // combine options to control
     var combineOptions = function (obj, options) {
         var settings = obj.data(pluginName);
@@ -91,10 +103,10 @@
     var setDefaultValue = function (obj, value) {
         var defaultAttr = obj.next('ul').children('li:first').attr('data-dropdown');
         if (defaultAttr == undefined && value != null) {
-            // 原来没有默认项，现在加上
+            // no default options, now add
             obj.next('ul').prepend('<li><a>' + value + '</a></li>');
         } else if (defaultAttr != undefined && value == null) {
-            // 原来有默认项，现在去掉
+            // has default options, now remove
             obj.next('ul').children('li:first').remove();
         }
         setFirstSelection(obj, value);
@@ -141,6 +153,23 @@
         }
     }
 
+    var setMenuAlign = function (obj, value) {
+        if (value) {
+            obj.next('ul').addClass("dropdown-menu-right");
+        } else {
+            obj.next('ul').removeClass("dropdown-menu-right");
+        }
+    }
+
+    var setDisabledKeys = function (obj, value) {
+        obj.next('ul').children().removeClass('disabled');
+        if (!isArrayType(value))
+            return;
+        for (var i = 0; i < value.length; i++) {
+            obj.next('ul').children('li[data-dropdown=' + value[i] + ']').addClass("disabled");
+        }
+    }
+
     var setFunc = function (obj, value) {
         obj.next('ul').find('a').unbind();
 
@@ -163,7 +192,7 @@
 
     // handle settings
     var execOptions = function (obj, settings, options) {
-        if (options.isSplit != undefined && settings.isSplit != options.isSplit) {
+        if (options.isSplit && settings.isSplit != options.isSplit) {
             setIsSplit(obj, options.isSplit);
             if (settings.width) {
                 setWidth(obj, settings.width);
@@ -172,20 +201,26 @@
                 setTitleStyle(obj, settings.titleStyle);
             }
         }
-        if (options.titleStyle != undefined && settings.titleStyle != options.titleStyle) {
+        if (options.titleStyle && settings.titleStyle != options.titleStyle) {
             setTitleStyle(obj, options.titleStyle);
         }
-        if (options.width != undefined && settings.width != options.width) {
+        if (options.width && settings.width != options.width) {
             setWidth(obj, options.width);
         }
-        if (options.isUp != undefined && settings.isUp != options.isUp) {
+        if (options.isUp && settings.isUp != options.isUp) {
             setIsUp(obj, options.isUp);
         }
-        if (options.defaultValue != undefined && settings.defaultValue != options.defaultValue) {
+        if (options.defaultValue && settings.defaultValue != options.defaultValue) {
             setDefaultValue(obj, options.defaultValue);
         }
         if (options.separator && settings.separator != options.separator) {
             setSeparator(obj, options.separator);
+        }
+        if (options.menuAlign && settings.menuAlign != options.menuAlign) {
+            setMenuAlign(obj, options.menuAlign);
+        }
+        if (options.disabledKeys && settings.disabledKeys != options.disabledKeys) {
+            setDisabledKeys(obj, options.disabledKeys);
         }
         if (options.func && settings.func != options.func) {
             setFunc(obj, options.func);
@@ -199,19 +234,10 @@
                 var $this = $(this);
 
                 // try to get settings
-                var settings = $this.data(pluginName);
+                var settings = getSettings($this, true);
 
                 if (typeof (settings) == 'undefined') {
-                    settings = {
-                        isSplit: true,
-                        titleStyle: 'span',
-                        isUp: false,
-                        defaultValue: null,
-                        key: 'key',
-                        value: 'value'
-                    };
-
-                    settings = $.extend({}, settings, options);
+                    settings = $.extend({}, defaults, options);
                     // save settings
                     $this.data(pluginName, settings);
 
@@ -264,7 +290,7 @@
 
                 var ul = $this.removeAttr('disabled').removeAttr('data-dropdown').next('ul');
                 for (var i = 0; i < list.length; i++) {
-                    ul.append('<li data-dropdown="' + eval('list[i].' + settings.key) + '"><a>' + eval('list[i].' + settings.value) + '</a></li>');
+                    ul.append('<li data-dropdown="' + list[i][settings.key] + '"><a title="' + list[i][settings.value] + '">' + list[i][settings.value] + '</a></li>');
                 }
 
                 setFirstSelection($this, settings.defaultValue);
@@ -318,7 +344,7 @@
                 var ul = $this.next('ul');
                 var lastIndex = ul.find('a').length - 1;
                 for (var i = 0; i < list.length; i++) {
-                    ul.append('<li data-dropdown="' + eval('list[i].' + settings.key) + '"><a>' + eval('list[i].' + settings.value) + '</a></li>');
+                    ul.append('<li data-dropdown="' + list[i][settings.key] + '"><a title="' + list[i][settings.value] + '">' + list[i][settings.value] + '</a></li>');
                 }
 
                 // setFirstSelection($this, settings.defaultValue);
